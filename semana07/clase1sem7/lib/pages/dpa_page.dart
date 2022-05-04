@@ -9,7 +9,7 @@ class DpaPage extends StatefulWidget {
 }
 
 class _DpaPageState extends State<DpaPage> {
-  String region = '', provincia = '';
+  String region = '', provincia = '', comuna = '';
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,12 @@ class _DpaPageState extends State<DpaPage> {
                 future: DpaProvider().getRegiones(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (!snapshot.hasData) {
-                    return Text('Cargando regiones...');
+                    //return Text('Cargando regiones...');
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando regiones...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
                   }
 
                   var regiones = snapshot.data;
@@ -44,6 +49,8 @@ class _DpaPageState extends State<DpaPage> {
                     onChanged: (nuevaRegion) {
                       setState(() {
                         region = nuevaRegion.toString();
+                        provincia = '';
+                        comuna = '';
                       });
                     },
                   );
@@ -56,8 +63,13 @@ class _DpaPageState extends State<DpaPage> {
               child: FutureBuilder(
                 future: DpaProvider().getProvincias(region),
                 builder: (context, AsyncSnapshot snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text('Cargando provincias...');
+                  if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
+                    // return Text('Cargando provincias...');
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando provincias...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
                   }
 
                   var provincias = snapshot.data;
@@ -69,10 +81,46 @@ class _DpaPageState extends State<DpaPage> {
                         value: provincia['codigo'],
                       );
                     }).toList(),
-                    value: null,
+                    value: provincia.isEmpty ? null : provincia,
                     onChanged: (nuevaProvincia) {
                       setState(() {
                         provincia = nuevaProvincia.toString();
+                        comuna = '';
+                      });
+                    },
+                  );
+                },
+              ),
+            ),
+
+            //comunas
+            Container(
+              child: FutureBuilder(
+                future: DpaProvider().getComunas(region, provincia),
+                builder: (context, AsyncSnapshot snapshot) {
+                  if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting) {
+                    //return Text('Cargando comunas');
+                    return DropdownButtonFormField<String>(
+                      hint: Text('Cargando comunas...'),
+                      items: [],
+                      onChanged: (valor) {},
+                    );
+                  }
+
+                  var comunas = snapshot.data;
+
+                  return DropdownButtonFormField<String>(
+                    hint: Text('Comunas'),
+                    items: comunas.map<DropdownMenuItem<String>>((comuna) {
+                      return DropdownMenuItem<String>(
+                        child: Text(comuna['nombre']),
+                        value: comuna['codigo'],
+                      );
+                    }).toList(),
+                    value: comuna.isEmpty ? null : comuna,
+                    onChanged: (nuevaComuna) {
+                      setState(() {
+                        comuna = nuevaComuna.toString();
                       });
                     },
                   );

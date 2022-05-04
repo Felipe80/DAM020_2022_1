@@ -32,7 +32,8 @@ class MonedasPage extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 }
-                return ListView.builder(
+                return ListView.separated(
+                  separatorBuilder: ((_, __) => Divider()),
                   itemCount: snapshot.data.length,
                   itemBuilder: (context, index) {
                     var moneda = snapshot.data[index];

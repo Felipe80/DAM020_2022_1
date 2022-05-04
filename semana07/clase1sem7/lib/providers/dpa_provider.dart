@@ -30,4 +30,19 @@ class DpaProvider {
       return [];
     }
   }
+
+  Future<List<dynamic>> getComunas(String region, String provincia) async {
+    if (region.isEmpty || provincia.isEmpty) {
+      return [];
+    }
+
+    var url = Uri.parse('$apiURL/regiones/$region/provincias/$provincia/comunas');
+    var respuesta = await http.get(url);
+
+    if (respuesta.statusCode == 200) {
+      return json.decode(respuesta.body);
+    } else {
+      return [];
+    }
+  }
 }
