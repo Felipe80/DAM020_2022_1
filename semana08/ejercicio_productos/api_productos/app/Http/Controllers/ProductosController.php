@@ -45,16 +45,7 @@ class ProductosController extends Controller
         return $producto;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Producto  $producto
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Producto $producto)
-    {
-        //
-    }
+    
 
     /**
      * Update the specified resource in storage.
@@ -65,7 +56,10 @@ class ProductosController extends Controller
      */
     public function update(Request $request, Producto $producto)
     {
-        //
+        $producto->nombre = $request->nombre;
+        $producto->precio = $request->precio;
+        $producto->stock = $request->stock;
+        $producto->save();
     }
 
     /**
