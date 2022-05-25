@@ -36,11 +36,68 @@ class _ProductosPageState extends State<ProductosPage> {
                     itemCount: snap.data.length,
                     itemBuilder: (context, index) {
                       var prod = snap.data[index];
-                      return ListTile(
-                        leading: Icon(MdiIcons.cube),
-                        title: Text(prod['nombre']),
-                        subtitle: Text('Stock: ${prod['stock']}'),
-                        trailing: Text('\$${fPrecio.format(prod['precio'])}'),
+                      return Dismissible(
+                        key: ObjectKey(prod),
+                        direction: DismissDirection.endToStart,
+                        background: Container(
+                          color: Colors.purple,
+                        ),
+                        secondaryBackground: Container(
+                          padding: EdgeInsets.only(right: 10),
+                          alignment: Alignment.centerRight,
+                          color: Colors.red,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                'Borrar',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              Icon(
+                                MdiIcons.trashCan,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ),
+                        onDismissed: (direction) {
+                          // if (direction == DismissDirection.startToEnd) {
+                          //   print('StartToEnd');
+                          // } else {
+                          //   print('EndToStart');
+                          // }
+
+                          String cod_producto = prod['cod_producto'];
+                          // print(cod_producto);
+
+                          ProductosProvider().productosBorrar(cod_producto).then((borradoOk) {
+                            if (borradoOk) {
+                              //pudo borrar
+                              snap.data.removeAt(index);
+                              setState(() {});
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(seconds: 2),
+                                  content: Text('Producto borrado'),
+                                ),
+                              );
+                            } else {
+                              //no pudo borrar
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  duration: Duration(seconds: 2),
+                                  content: Text('No se pudo borrar el producto :('),
+                                ),
+                              );
+                            }
+                          });
+                        },
+                        child: ListTile(
+                          leading: Icon(MdiIcons.cube),
+                          title: Text(prod['nombre']),
+                          subtitle: Text('Stock: ${prod['stock']}'),
+                          trailing: Text('\$${fPrecio.format(prod['precio'])}'),
+                        ),
                       );
                     },
                   );

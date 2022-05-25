@@ -27,4 +27,10 @@ class ProductosProvider {
 
     return json.decode(respuesta.body);
   }
+
+  Future<bool> productosBorrar(String cod_producto) async {
+    var uri = Uri.parse('$apiURL/productos/$cod_producto');
+    var respuesta = await http.delete(uri);
+    return respuesta.statusCode == 200;
+  }
 }

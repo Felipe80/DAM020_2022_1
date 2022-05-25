@@ -15,6 +15,9 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
   TextEditingController stockCtrl = TextEditingController();
   TextEditingController precioCtrl = TextEditingController();
 
+  String errCodigo = '';
+  String errNombre = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,9 +34,23 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                 controller: codigoCtrl,
                 decoration: InputDecoration(labelText: 'Código'),
               ),
+              Container(
+                width: double.infinity,
+                child: Text(
+                  errCodigo,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
               TextFormField(
                 controller: nombreCtrl,
                 decoration: InputDecoration(labelText: 'Nombre'),
+              ),
+              Container(
+                width: double.infinity,
+                child: Text(
+                  errNombre,
+                  style: TextStyle(color: Colors.red),
+                ),
               ),
               TextFormField(
                 controller: stockCtrl,
@@ -49,16 +66,31 @@ class _ProductosAgregarPageState extends State<ProductosAgregarPage> {
                 width: double.infinity,
                 child: ElevatedButton(
                   child: Text('Agregar Producto'),
-                  onPressed: () {
+                  onPressed: () async {
                     int stock = int.tryParse(stockCtrl.text) ?? 0;
                     int precio = int.tryParse(precioCtrl.text) ?? 0;
 
-                    ProductosProvider().productosAgregar(
+                    var respuesta = await ProductosProvider().productosAgregar(
                       codigoCtrl.text.trim(),
                       nombreCtrl.text.trim(),
                       stock,
                       precio,
                     );
+
+                    if (respuesta['message'] != null) {
+                      //cod_producto
+                      if (respuesta['errors']['cod_producto'] != null) {
+                        errCodigo = respuesta['errors']['cod_producto'][0];
+                      }
+
+                      //nombre
+                      if (respuesta['errors']['nombre'] != null) {
+                        errNombre = respuesta['errors']['nombre'][0];
+                      }
+
+                      setState(() {});
+                      return;
+                    }
 
                     Navigator.pop(context);
                   },
