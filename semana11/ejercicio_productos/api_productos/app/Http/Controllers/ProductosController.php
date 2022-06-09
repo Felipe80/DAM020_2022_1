@@ -33,6 +33,7 @@ class ProductosController extends Controller
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->stock = $request->stock;
+        $producto->categoria_id = $request->categoria_id;
         $producto->save();
     }
 
@@ -58,11 +59,11 @@ class ProductosController extends Controller
      */
     public function update(ProductoEditarRequest $request, Producto $producto)
     {
-        //C27307
         $producto->cod_producto = $request->cod_producto;
         $producto->nombre = $request->nombre;
         $producto->precio = $request->precio;
         $producto->stock = $request->stock;
+        $producto->categoria_id = $request->categoria_id;
         $producto->save();
         return $producto;
     }

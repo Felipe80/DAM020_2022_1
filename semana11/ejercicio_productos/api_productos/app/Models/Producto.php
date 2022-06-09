@@ -15,4 +15,8 @@ class Producto extends Model
     public $incrementing = false;
     protected $keyType = 'string';
     public $timestamps = false;
+
+    public function categoria(){
+        return $this->belongsTo(Categoria::class);
+    }
 }
