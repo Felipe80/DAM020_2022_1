@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "955442624949",
+    "project_id": "dam020-2022-1-calten",
+    "storage_bucket": "dam020-2022-1-calten.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:955442624949:android:357ad782894b089fac41fc",
+        "android_client_info": {
+          "package_name": "cl.usmdam020.firebase_login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "955442624949-tmnfq2b911566lpbgs7oj837b0k9uapv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAC7X7EwOYxN-Hx9TzeZLGmQbJqRb22_N4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "955442624949-tmnfq2b911566lpbgs7oj837b0k9uapv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
