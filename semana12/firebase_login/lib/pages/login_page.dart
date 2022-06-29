@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_login/pages/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -56,10 +57,12 @@ class _LoginPageState extends State<LoginPage> {
                       password: passwordCtrl.text.trim(),
                     );
 
+                    SharedPreferences sp = await SharedPreferences.getInstance();
+                    sp.setString('userEmail', emailCtrl.text.trim());
+
                     MaterialPageRoute route = MaterialPageRoute(
                       builder: (context) => HomePage(),
                     );
-
                     Navigator.pushReplacement(context, route);
                   } on FirebaseAuthException catch (ex) {
                     // print('EXCEPTION: ${ex.code}');
